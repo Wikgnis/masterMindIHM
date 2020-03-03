@@ -1,7 +1,42 @@
+/* general setup */
 body {
     margin: 0;
 }
 
-#navBar li{
+/* Top Menu */
+    #NavBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    }
+
+    #NavBar li {
     float: left;
-}
+    }
+
+    #NavBar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 34px 36px;
+    text-decoration: none;
+    }
+
+    /* the link color to #111 (black) on hover */
+    #NavBar li a:hover {
+    background-color: #111;
+    }
+
+/* Home IMG */
+    #HomeIMG img{
+        width: 100%;
+    }
+
+/* Footer */
+    footer {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+    }
