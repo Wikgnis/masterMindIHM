@@ -22,7 +22,7 @@ html {
 
     #NavBar li a {
     display: block;
-    font-size: 3vh;
+    font-size: 3em;
     color: white;
     text-align: center;
     padding: 34px 36px;
@@ -61,13 +61,7 @@ html {
         font-size: 5vh;
         color: whitesmoke;
     }
-
-/* Game */
-    #Game {
-        height: 100vh;
-        background: black;
-    }
-
+  
 /* Footer */
     footer {
         /* position */
@@ -83,6 +77,7 @@ html {
         /* background */
         background-color: #333;
         /* text */
+        font-size: 1em;
         color: white;
     }
 
