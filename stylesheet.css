@@ -98,3 +98,44 @@ html {
         height: 100vh;
         background: white;
     }
+
+/* Game */
+    .row {
+        height: 100px;
+        background: lightblue;
+        text-align: center;
+    }
+
+    .round {
+        margin: 0 5px 0 5px;
+        display: inline-block;
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        background: grey;
+    }
+
+    /* all colors */
+    .yellow {
+        background-color: yellow;
+    }
+
+    .black {
+        background-color: black;
+    }
+
+    .blue {
+        background-color: blue;
+    }
+
+    .red {
+        background-color: red;
+    }
+
+    .magenta {
+        background-color: magenta;
+    }
+
+    .cyan {
+        background-color: cyan;
+    }
