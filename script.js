@@ -8,8 +8,27 @@ console.log('Starting generating the Mastermind.');
      * event related
      */
     function roundOnclick() {
-        console.log(event.target.id + ' clicked');
+        var element = event.target;
+        console.log(element.id + ' clicked');
         /* color choice */
+        delColorPalette()
+        frame = document.getElementById("Game");
+        frame.appendChild(generateColorPalette())
+    }
+
+    function generateColorPalette(element){
+        var palette = document.createElement('div');
+        palette.classList.add('palette');
+        return palette;
+    }
+
+    function delColorPalette() {
+        try {
+            var palette = document.getElementById("palette");
+            palette.remove();
+        } catch (error) {
+            
+        }
     }
 
     /**
