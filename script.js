@@ -1,3 +1,7 @@
+/**
+ * @autor LEBOCQ Titouan
+ */
+
 /* Generation of the masterMind */
 console.log('Starting generating the Mastermind.');
 
@@ -10,7 +14,10 @@ let elementChoosed;
     /**
      * event related
      */
-var colorPaletteGenerated = false;
+var colorPaletteGenerated = false; // used to delete the colorpalette if the user click in the gameFrame
+/**
+ * create the color palette if element is clicked
+ */
 function roundOnclick() {
     var element = event.target;
     var parentClassList = element.parentElement.classList;
@@ -30,8 +37,10 @@ function roundOnclick() {
         }
     }
 }
-
-function generateColorPalette(element){
+/**
+ * Generate if necessary a color palette
+ */
+function generateColorPalette(){
     if (document.getElementById("palette") == null) {
         var palette = document.createElement('div');
         palette.id = "palette";
@@ -46,6 +55,9 @@ function generateColorPalette(element){
     }
 }
 
+/**
+ * Change the color of the Master mind element actually choosed
+ */
 function chooseColor() {
     if (elementChoosed != null) {
         console.log(event.target.classList[0]);
@@ -56,6 +68,9 @@ function chooseColor() {
     }
 }
 
+/**
+ * destroy (if generated) the color palette
+ */
 function delColorPalette() {
     try {
         console.log("destroy palette");
@@ -65,6 +80,10 @@ function delColorPalette() {
     } catch (error) {}
 }
 
+/**
+ * if ( @see allChecked ) generate new row
+ * @param {*} gameFrame in which we work
+ */
 function validationCheck(gameFrame) {
     if (allChecked()) {
         elementChoosed = null;
@@ -75,6 +94,9 @@ function validationCheck(gameFrame) {
     }
 }
 
+/**
+ * Check if all 4 Master Mind element have colors
+ */
 function allChecked() {
     var activeRow = document.getElementsByClassName("row")[0];
     var colorsChoosed = 0;
@@ -94,6 +116,10 @@ function allChecked() {
     /**
      * generation
     */
+/**
+ * generate a new row with round in it ( @see createRound )
+ * @param {*} gameFrame in which we work
+ */
 function createRow(gameFrame) {
     console.log('Row Creation ');
     var row = document.createElement('div');
@@ -110,12 +136,19 @@ function createRow(gameFrame) {
     else gameFrame.insertBefore(row, gameFrame.firstChild);
 }
 
+/**
+ * create a round div
+ */
 function createRound() {
     var round = document.createElement('div');
     round.classList.add('round');
     return round;
 }
 
+/**
+ * generate an unique id for round div
+ * @return {String} composed of circle + number of other circle
+ */
 function createID() {
     if (typeof nbID == 'undefined') nbID = 0;
     else nbID++;
@@ -125,21 +158,23 @@ function createID() {
 /**
  * active part
  */
-let gameFrame = document.getElementById("Game");
 
+let gameFrame = document.getElementById("Game"); // create gameFrame
+//setup gamFrame
 gameFrame.style.height = "100vh";
 gameFrame.style.background = "#FDF1B8";
 gameFrame.style.overflow = "hidden";
 
-gameFrame.onclick = function () {
+gameFrame.onclick = function () { // delete the color palette if needed (focus on the gameFrame)
     console.log("Palette can be deleted : " + colorPaletteGenerated);
     if (colorPaletteGenerated) delColorPalette();
 }
 
+// creation of the validation button to generate rows
 var b = document.createElement('button');
 b.innerText = "Valider";
 b.id = 'validationButton';
 gameFrame.appendChild(b);
 b.onclick = function () { validationCheck(gameFrame); };
 
-createRow(gameFrame);
+createRow(gameFrame); // creation first row
