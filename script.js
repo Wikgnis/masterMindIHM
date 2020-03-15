@@ -60,7 +60,7 @@ function generateColorPalette(){
  */
 function chooseColor() {
     if (elementChoosed != null) {
-        console.log(event.target.classList[0]);
+        console.log("Color choosed : " + event.target.classList[0]);
         color = event.target.classList[0];
         elementChoosed.classList.add(color);
         if (elementChoosed.classList.length > 2) elementChoosed.classList.remove(elementChoosed.classList[1]);
@@ -182,5 +182,5 @@ createRow(gameFrame); // creation first row
 
 /* generation game engine */
 var scriptGen = document.createElement('script');
-scriptGen.src = 'engineMastermind.js';
+scriptGen.src = 'MasterMind_gameEngine.js';
 gameFrame.appendChild(scriptGen);

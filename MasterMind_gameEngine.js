@@ -6,21 +6,28 @@ function getRandomInt(max) {
 var colorList = ['yellow', 'black', 'blue', 'red', 'magenta', 'cyan'];
 
 function getColorElement(element) {
+	var elementColor = 'none'
 	element.classList.forEach(className => {
 		if (className != 'round') {
 			colorList.forEach(color => {
-				if (color == className) return className;
+				if (color == className) {
+					console.log("element got color : " + color)
+					elementColor = color;
+				}
 			});
 		}
-	})
-	return 'none';
+	});
+	return elementColor;
 }
 
 function getColorsOfMasterMindElements() {
 	var activeRow = document.getElementsByClassName("row")[0];
 	var colors = [];
 	(activeRow.childNodes).forEach(elementChild => {
-		colors.push(getColorElement(elementChild));
+		var color = "";
+		color = getColorElement(elementChild) == null ? 'none' : getColorElement(elementChild);
+		console.log(color);
+		colors.push(color)
 	});
 	return colors;
 }
@@ -59,10 +66,15 @@ coucou
 */
 var compteur = 0;
 
+document.onclick = function () {
+	var colors = getColorsOfMasterMindElements();
+	console.log('Colors : ' + colors);
+}
+
 while( (compteur<13) && !(testVictoire(solution,reponse)) )
 {
 	console.log('Tour '+compteur);
-	var colors = getColorsOfMasterMindElements;
+	var colors = getColorsOfMasterMindElements();
 	console.log('Colors : ' + colors);
 	reponse = [coul1,coul2,coul3,coul4];
 	compteur++;
