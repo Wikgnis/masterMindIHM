@@ -66,11 +66,6 @@ coucou
 */
 var compteur = 0;
 
-document.onclick = function () {
-	var colors = getColorsOfMasterMindElements();
-	console.log('Colors : ' + colors);
-}
-
 while( (compteur<13) && !(testVictoire(solution,reponse)) )
 {
 	console.log('Tour '+compteur);
