@@ -176,5 +176,11 @@ b.innerText = "Valider";
 b.id = 'validationButton';
 gameFrame.appendChild(b);
 b.onclick = function () { validationCheck(gameFrame); };
+// end creation of the validation button
 
 createRow(gameFrame); // creation first row
+
+/* generation game engine */
+var scriptGen = document.createElement('script');
+scriptGen.src = 'engineMastermind.js';
+gameFrame.appendChild(scriptGen);
