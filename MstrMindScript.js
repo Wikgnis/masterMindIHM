@@ -75,7 +75,7 @@ function createStyleSheet() {
 }
 
 function styleWrapper() {
-    return newStyle(".MastrMindWrapper", ["width : 100vw", "height : 100vh", "background : white", "display : inline-flex", "justify-content : center", "align-items : center"]);
+    return newStyle(".MastrMindWrapper", ["width : 100%", "height : 100%", "background : white", "display : inline-flex", "justify-content : center", "align-items : center"]);
 }
 
 function newStyle(name, args) {
@@ -126,7 +126,10 @@ function styleValidationButton() {
 }
 
 function stylePalette() {
-    return newStyle(".palette>div", ["display : inline-block", "width : 60px", "height : 60px"])
+    let styles = "";
+    styles += newStyle(".palette>div", ["display : inline-block", "width : 10vw", "height : 10vw", "margin : 1vw"]);
+    styles += newStyle(".palette", ["position : absolute", "left : 0", "width : 100%", "height : 100%", "display : flex", "justify-content : center", "align-items : center", "background : rgba(0, 0, 0, 0.9);"]);
+    return styles;
 }
 
 function styleContainer() {
