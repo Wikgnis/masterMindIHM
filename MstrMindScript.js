@@ -75,7 +75,7 @@ function createStyleSheet() {
 }
 
 function styleWrapper() {
-    return newStyle(".MastrMindWrapper", ["width : 100%", "height : 100%", "background : white", "display : inline-flex", "justify-content : center", "align-items : center"]);
+    return newStyle(".MastrMindWrapper", ["width : 100%", "height : 100%", "background : radial-gradient(circle, #F9A72B 0%, #FA9026 70%, #FB6C1F 100%)", "display : inline-flex", "justify-content : center", "align-items : center"]);
 }
 
 function newStyle(name, args) {
