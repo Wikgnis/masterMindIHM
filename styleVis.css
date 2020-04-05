@@ -4,20 +4,25 @@ body {
 }
 
 .MastrMindWrapper {
-    width: 100%;
-    background: red;
+    width: 100vw;
+    background: white;
+    text-align: center;
+}
+
+.container {
+    display: inline-block;
 }
 
 .rowElement {
     display: flex;
-    width: 100px;
-    height: 100px;
-    background: blue;
+    width: 5vh;
+    height: 5vh;
+    padding: 10px;
+    background: #2D2D2D;
 }
 
 .rowElement:last-child {
-    width: 200px;
-    background: violet;
+    width: 10vh;
     align-items: center;
     justify-content: space-evenly;
 }
@@ -95,4 +100,9 @@ body {
 #validationButton {
     width: 100%;
     height: 100%;
+    background: #378AD3;
+    border-style: none;
+    border-radius: 8px;
+    color : white;
+    font-size: 1em;
 }

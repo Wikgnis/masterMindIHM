@@ -75,7 +75,7 @@ function createStyleSheet() {
 }
 
 function styleWrapper() {
-    return newStyle(".MastrMindWrapper", ["width : 100%", "background : red"]);
+    return newStyle(".MastrMindWrapper", ["width : 100vw", "height : 100vh", "background : white", "display : inline-flex", "justify-content : center", "align-items : center"]);
 }
 
 function newStyle(name, args) {
@@ -95,10 +95,9 @@ function styleRow() {
 function styleRowElements() {
     let styles = new String();
     // content
-    let size = 100;
-    styles += newStyle(".rowElement", ["display : flex", "width : " + size + "px", "height : " + size + "px", "background : blue"]);
+    styles += newStyle(".rowElement", ["display : flex", "width : 5vh", "height : 5vh", "padding: 10px","background : #2D2D2D"]);
     // last child
-    styles += newStyle(".rowElement:last-child", ["width : " + 2 * size + "px", "background : violet", "align-items:center", "justify-content : space-evenly"]);
+    styles += newStyle(".rowElement:last-child", ["width : 10vh ", "align-items:center", "justify-content : space-evenly"]);
     styles += newStyle(".active>.rowElement:last-child>.Hint", ["display : none"])
     // visual
     styles += newStyle(".visual", ["width : 100%", "height : 100%", "border-radius : 50%", "background : white"])
@@ -123,11 +122,15 @@ function styleHint() {
 }
 
 function styleValidationButton() {
-    return newStyle("#validationButton", ["width : 100%", "height : 100%"]);
+    return newStyle("#validationButton", ["width : 100%", "height : 100%", "background: #378AD3", "border-style: none", "border-radius: 8px", "color : white", "font-size: 1em"]);
 }
 
 function stylePalette() {
     return newStyle(".palette>div", ["display : inline-block", "width : 60px", "height : 60px"])
+}
+
+function styleContainer() {
+    return newStyle(".container", ["display: inline-block;"])
 }
 
 function setupStyleSheet(style) {
@@ -138,6 +141,7 @@ function setupStyleSheet(style) {
     content += styleRow();
     content += styleHint();
     content += styleValidationButton();
+    content += styleContainer();
     style.appendChild(document.createTextNode(content));
 }
 
