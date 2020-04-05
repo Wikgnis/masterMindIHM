@@ -13,8 +13,7 @@ function createContainer() {
     for (let i = 0; i < 12; i++) {
         container.appendChild(createRow());
     }
-    container.lastChild.classList.remove("inactive");
-    container.lastChild.classList.add("active");
+    row_Active(container.lastChild);
     return container;
 }
 
@@ -60,7 +59,6 @@ function createVisual() {
                 FocusedVisual = FcdVisual;
                 if (!paletteDeployed) deployPallette();
                 else destroyPalette();
-                paletteDeployed = !paletteDeployed;
             }
         });
         console.log("Focused Visual : " + FocusedVisual + "\n Palette deployed : " + paletteDeployed);
@@ -100,7 +98,8 @@ function styleRowElements() {
     let size = 100;
     styles += newStyle(".rowElement", ["display : flex", "width : " + size + "px", "height : " + size + "px", "background : blue"]);
     // last child
-    styles += newStyle(".rowElement:last-child", ["width : " + 2 * size + "px", "background : violet", "align-items:center", "justify-content : space-evenly"])
+    styles += newStyle(".rowElement:last-child", ["width : " + 2 * size + "px", "background : violet", "align-items:center", "justify-content : space-evenly"]);
+    styles += newStyle(".active>.rowElement:last-child>.Hint", ["display : none"])
     // visual
     styles += newStyle(".visual", ["width : 100%", "height : 100%", "border-radius : 50%", "background : white"])
     // color choice
@@ -119,7 +118,12 @@ function styleHint() {
     let styles = new String();
     styles += newStyle(".Hint", ["width : 20%", "height : 40%", "border-radius : 50%", "background : white", "display : inline-block"]);
     styles += newStyle(".found", ["background : green"]);
+    styles += newStyle(".partFound", ["background : black"])
     return styles;
+}
+
+function styleValidationButton() {
+    return newStyle("#validationButton", ["width : 100%", "height : 100%"]);
 }
 
 function stylePalette() {
@@ -133,6 +137,7 @@ function setupStyleSheet(style) {
     content += stylePalette();
     content += styleRow();
     content += styleHint();
+    content += styleValidationButton();
     style.appendChild(document.createTextNode(content));
 }
 
@@ -168,17 +173,125 @@ function deployPallette() {
                 FocusedVisual.classList.remove(color);
             });
             FocusedVisual.classList.add(event.target.classList);
+            destroyPalette();
         }
         palette.appendChild(element);
     });
     wrappers[0].appendChild(palette);
+    paletteDeployed = true;
     console.log("Palette deployed : " + paletteDeployed);
 }
 
 function destroyPalette() {
     FocusedVisual = null;
-    palette.parentNode.removeChild(palette);
+    try {
+        palette.parentNode.removeChild(palette);
+        paletteDeployed = false;
+    }
+    catch {}
     console.log("Palette deployed : " + paletteDeployed);
+}
+
+var soluce = ["grey", "orange", "red", "green"];
+
+function row_Active(element) {
+    element.classList.remove("inactive");
+    element.classList.add("active");
+    // creation validation
+    let validationButton = document.createElement("button");
+    validationButton.id = "validationButton";
+    validationButton.innerHTML = "Valider";
+    validationButton.onclick = function (event) {
+        let row = event.target.parentNode.parentNode;
+        let colorChoosed = [];
+        for (let index = 0; index < row.childNodes.length - 1; index++) {
+            const elementRow = row.childNodes[index];
+            if (elementRow.childNodes[0].classList.length > 1){
+                colorChoosed.push(elementRow.childNodes[0].classList[1])
+            }
+        }
+        if (colorChoosed.length == 4) {
+            row_Inactive(row);
+            editHint(row, detectCorrectAnswer(colorChoosed))
+        }
+    }
+    element.lastChild.appendChild(validationButton);
+}
+
+function row_Inactive(element) {
+    element.classList.remove("active");
+    element.classList.add("inactive");
+    let button = document.getElementById("validationButton");
+    button.parentNode.removeChild(button);
+    row_Active(element.previousSibling)
+}
+
+function editHint(row, Answers) {
+    for (let index = 0; index < Answers.length; index++) {
+        const element = Answers[index];
+        const Hint = row.lastChild.childNodes[index];
+        console.log(Hint);
+        if (element == "found") {
+            Hint.classList.add("found");
+        }
+        else {
+            Hint.classList.add("partFound");
+        }
+    }
+}
+
+/**
+ * Detection
+ */
+
+function detectActiveRow(wrapper) {
+    let rows = wrapper.getElementsByClassName("container")[0].children;
+    let activeRow = null;
+    for (let index = rows.length - 1; index >= 0 && activeRow == null; index--) {
+        const element = rows[index];
+        Array.from(element.classList).forEach(classElement => {
+            if (classElement == "active") {
+                activeRow = element;
+            }
+        });
+    }
+    return activeRow;
+}
+
+function isInSoluce(element) {
+    let isSoluce = false;
+    for (let index = 0; index < soluce.length && !isSoluce; index++) {
+        const color = soluce[index];
+        if (color == element) isSoluce = true
+    }
+    return isSoluce;
+}
+
+function isIn(element, ArrayT) {
+    let returnState = false;
+    for (let index = 0; index < ArrayT.length && !returnState; index++) {
+        const elementArray = ArrayT[index];
+        if (elementArray == element) returnState = true;
+    }
+    return returnState;
+}
+
+function detectCorrectAnswer(choices) {
+    let returnArray = [];
+    let colorsChoosed = [];
+    for (let index = 0; index < choices.length; index++) {
+        const element = choices[index];
+        if (!(isIn(element, colorsChoosed)) && isInSoluce(element)) {
+            colorsChoosed.push(element);
+            console.log(colorsChoosed);
+            if (soluce.indexOf(element) == index) {
+                returnArray.unshift("found");
+            } else {
+                returnArray.push("foundPart");
+            }
+        }
+    }
+    return returnArray;
 }
 
 /**
