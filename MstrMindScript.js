@@ -61,7 +61,6 @@ function createVisual() {
                 else destroyPalette();
             }
         });
-        console.log("Focused Visual : " + FocusedVisual + "\n Palette deployed : " + paletteDeployed);
     }
     return visual;
 }
@@ -186,7 +185,6 @@ function deployPallette() {
     });
     wrappers[0].appendChild(palette);
     paletteDeployed = true;
-    console.log("Palette deployed : " + paletteDeployed);
 }
 
 function destroyPalette() {
@@ -196,10 +194,17 @@ function destroyPalette() {
         paletteDeployed = false;
     }
     catch {}
-    console.log("Palette deployed : " + paletteDeployed);
 }
 
-var soluce = ["grey", "orange", "red", "green"];
+function createSoluce() {
+    let CreatedSoluce = [];
+    let colorsSoluce = Array.from(colors);
+    for (let index = 0; index < 4; index++) {
+        CreatedSoluce.push(colorsSoluce.splice(Math.floor(Math.random() * colorsSoluce.length), 1)[0]);
+    }
+    return CreatedSoluce;
+}
+var soluce = createSoluce();
 
 function row_Active(element) {
     element.classList.remove("inactive");
@@ -219,7 +224,10 @@ function row_Active(element) {
         }
         if (colorChoosed.length == 4) {
             row_Inactive(row);
-            editHint(row, detectCorrectAnswer(colorChoosed))
+            let answer = detectCorrectAnswer(colorChoosed);
+            if (editHint(row, answer) == 4) {
+                //do something
+            }
         }
     }
     element.lastChild.appendChild(validationButton);
@@ -234,17 +242,19 @@ function row_Inactive(element) {
 }
 
 function editHint(row, Answers) {
+    let foundCount = 0;
     for (let index = 0; index < Answers.length; index++) {
         const element = Answers[index];
         const Hint = row.lastChild.childNodes[index];
-        console.log(Hint);
         if (element == "found") {
             Hint.classList.add("found");
+            foundCount++;
         }
         else {
             Hint.classList.add("partFound");
         }
     }
+    return foundCount;
 }
 
 /**
@@ -290,7 +300,6 @@ function detectCorrectAnswer(choices) {
         const element = choices[index];
         if (!(isIn(element, colorsChoosed)) && isInSoluce(element)) {
             colorsChoosed.push(element);
-            console.log(colorsChoosed);
             if (soluce.indexOf(element) == index) {
                 returnArray.unshift("found");
             } else {
