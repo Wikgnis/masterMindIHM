@@ -1,6 +1,38 @@
 /**
+ * Event listener
+ */
+document.addEventListener("keydown", event => {
+    switch (event.keyCode) { // enter key
+        case 13:
+            valider();
+            break;
+
+        default:
+            break;
+    }
+})
+/**
  * Creating elements
  */
+function createMenu() {
+
+}
+
+function createRules() {
+    let Rules = document.createElement("div");
+    Rules.style.cssText = "position : absolute; top : 0; width : 100%; height : 100%; background : red; transition : 1s;";
+    Rules.onclick = function () {
+        this.id = "toDelete";
+        this.style.top = "-100%";
+        setTimeout(function () { document.getElementById("toDelete").remove(); }, 1000);
+    }
+    return Rules;
+}
+
+function showRules() {
+    document.body.appendChild(createRules());
+}
+
 var nbVis = 0;
 function createIdVisual() {
     nbVis++;
@@ -9,6 +41,8 @@ function createIdVisual() {
 
 function createContainer() {
     let container = document.createElement("div");
+    soluce = createSoluce();
+    console.log(soluce);
     container.classList.add("container");
     for (let i = 0; i < 12; i++) {
         container.appendChild(createRow());
@@ -65,12 +99,41 @@ function createVisual() {
     return visual;
 }
 
-function createStyleSheet() {
-    var style = document.createElement("style");
-    style.id = "MstrMind_StyleSheet";
-    style.appendChild(document.createTextNode("")); // WebKit hack
-    style.type = 'text/css';
-    return style;
+function createRestartButton() {
+    let restartButton = document.createElement("button");
+    restartButton.style.cssText = "position : absolute; top : 0; Left : 0; height : 50px";
+    restartButton.innerHTML = "restart";
+    restartButton.onclick = function () { restart(); }
+    return restartButton;
+}
+
+function createEndScreen() {
+    let ecranDeFin = document.createElement("div");
+    ecranDeFin.id = "ecranFin";
+    ecranDeFin.style.cssText = "position : absolute; top : 0; left : 0; width : 100%; height : 100%; background: #313638;display: flex;justify-content: center;align-items: center;flex-direction: column;; transition : 1s";
+    ecranDeFin.onclick = function () {
+        let element = this;
+        setTimeout(function () { document.getElementById("ecranFin").remove(); }, 1000);
+        this.style.top = "-100%";
+        restart()
+    }
+    let text = document.createElement("div");
+    let img = document.createElement("img");
+    img.src = gagne ? "https://image.flaticon.com/icons/svg/2784/2784484.svg" :"https://image.flaticon.com/icons/svg/1687/1687666.svg";
+    img.alt = "win logo";
+    img.style.cssText = "width: 200px; height: 200px;"
+    text.appendChild(img);
+    let textCongrat = document.createElement("div");
+    if (gagne) textCongrat.innerHTML = "Bravo vous avez gagné !";
+    else textCongrat.innerHTML = "Dommage vous avez perdu"
+    text.appendChild(textCongrat);
+    text.style.cssText = "display: flex;justify-content: center;align-items: center;margin: 50px;font-size: 50px;font-family: 'Playfair Display', serif;font-weight: bold;color: black;background-color: #e8e9eb;padding: 20px 100px;border-radius: 20px;"
+    let textRestart = document.createElement("div");
+    textRestart.innerHTML = "Click to Restart";
+    textRestart.style.cssText = "color:#e8e9eb;font-size: 80px;font-family: 'Playfair Display', serif;font-weight: bold;padding: 10px;";
+    ecranDeFin.appendChild(text);
+    ecranDeFin.appendChild(textRestart);
+    return ecranDeFin;
 }
 
 function styleWrapper() {
@@ -135,6 +198,12 @@ function styleContainer() {
     return newStyle(".container", ["display: inline-block;"])
 }
 
+function styleAnimation() {
+    let styles = "";
+    styles += "$n: 20;";
+    return styles;
+}
+
 function setupStyleSheet(style) {
     let content = new String();
     content += styleWrapper();
@@ -144,12 +213,31 @@ function setupStyleSheet(style) {
     content += styleHint();
     content += styleValidationButton();
     content += styleContainer();
+    content += styleAnimation();
     style.appendChild(document.createTextNode(content));
+}
+
+function createStyleSheet() {
+    var style = document.createElement("style");
+    style.id = "MstrMind_StyleSheet";
+    style.appendChild(document.createTextNode("")); // WebKit hack
+    style.type = 'text/css';
+    return style;
 }
 
 /**
  * Editing Elements
  */
+
+function restart() {
+    wrappers[0].getElementsByClassName("container")[0].remove();
+    wrappers[0].appendChild(createContainer())
+}
+
+function finPartie() {
+    wrappers[0].appendChild(createEndScreen());
+    gagne = false;
+}
 
 function updateContainer(container) {
 
@@ -171,6 +259,7 @@ var colors = ["orange", "red", "green", "white", "blue", "black", "grey", "viole
 function deployPallette() {
     palette = document.createElement("div");
     palette.classList.add("palette")
+    palette.onclick = function () { destroyPalette(); }
     colors.forEach(color => {
         let element = document.createElement("div");
         element.classList.add(color);
@@ -204,21 +293,15 @@ function createSoluce() {
     }
     return CreatedSoluce;
 }
-var soluce = createSoluce();
 
-function row_Active(element) {
-    element.classList.remove("inactive");
-    element.classList.add("active");
-    // creation validation
-    let validationButton = document.createElement("button");
-    validationButton.id = "validationButton";
-    validationButton.innerHTML = "Valider";
-    validationButton.onclick = function (event) {
-        let row = event.target.parentNode.parentNode;
+var gagne = false;
+function valider() {
+    try {
+        let row = detectActiveRow();
         let colorChoosed = [];
         for (let index = 0; index < row.childNodes.length - 1; index++) {
             const elementRow = row.childNodes[index];
-            if (elementRow.childNodes[0].classList.length > 1){
+            if (elementRow.childNodes[0].classList.length > 1) {
                 colorChoosed.push(elementRow.childNodes[0].classList[1])
             }
         }
@@ -226,10 +309,24 @@ function row_Active(element) {
             row_Inactive(row);
             let answer = detectCorrectAnswer(colorChoosed);
             if (editHint(row, answer) == 4) {
-                //do something
+                gagne = true;
+                finPartie();
             }
         }
+    } catch (error) {
+        finPartie();
     }
+}
+
+var soluce;
+function row_Active(element) {
+    element.classList.remove("inactive");
+    element.classList.add("active");
+    // creation validation
+    let validationButton = document.createElement("button");
+    validationButton.id = "validationButton";
+    validationButton.innerHTML = "Valider";
+    validationButton.onclick = function () { valider(); }
     element.lastChild.appendChild(validationButton);
 }
 
@@ -261,8 +358,8 @@ function editHint(row, Answers) {
  * Detection
  */
 
-function detectActiveRow(wrapper) {
-    let rows = wrapper.getElementsByClassName("container")[0].children;
+function detectActiveRow() {
+    let rows = wrappers[0].getElementsByClassName("container")[0].children;
     let activeRow = null;
     for (let index = rows.length - 1; index >= 0 && activeRow == null; index--) {
         const element = rows[index];
@@ -321,4 +418,6 @@ setupStyleSheet(Style);
 let wrappers = document.getElementsByClassName("MastrMindWrapper");
 Array.from(wrappers).forEach(wrapper =>{
     wrapper.appendChild(createContainer());
+    wrapper.appendChild(createRestartButton());
+    showRules();
 })
