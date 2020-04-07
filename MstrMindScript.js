@@ -25,12 +25,14 @@ function createRules() {
         this.id = "toDelete";
         this.style.top = "-100%";
         setTimeout(function () { document.getElementById("toDelete").remove(); }, 1000);
+        document.body.style.overflow = "auto";
     }
     return Rules;
 }
 
 function showRules() {
     document.body.appendChild(createRules());
+    document.body.style.overflow = "hidden";
 }
 
 var nbVis = 0;
@@ -39,12 +41,13 @@ function createIdVisual() {
     return "Visual_" + nbVis;
 }
 
+var nbTry = 22;
 function createContainer() {
     let container = document.createElement("div");
     soluce = createSoluce();
     console.log(soluce);
     container.classList.add("container");
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < nbTry; i++) {
         container.appendChild(createRow());
     }
     row_Active(container.lastChild);
@@ -137,7 +140,7 @@ function createEndScreen() {
 }
 
 function styleWrapper() {
-    return newStyle(".MastrMindWrapper", ["width : 100%", "height : 100%", "background : radial-gradient(circle, #F9A72B 0%, #FA9026 70%, #FB6C1F 100%)", "display : inline-flex", "justify-content : center", "align-items : center"]);
+    return newStyle(".MastrMindWrapper", ["width : 100%", "min-height : 100vh", "max-height : min-content", "background : radial-gradient(circle, #F9A72B 0%, #FA9026 70%, #FB6C1F 100%)", "display : inline-flex", "justify-content : center", "align-items : center"]);
 }
 
 function newStyle(name, args) {
@@ -184,7 +187,7 @@ function styleHint() {
 }
 
 function styleValidationButton() {
-    return newStyle("#validationButton", ["width : 100%", "height : 100%", "background: #378AD3", "border-style: none", "border-radius: 8px", "color : white", "font-size: 1em"]);
+    return newStyle("#validationButton", ["width : 100%", "height : 100%", "background: #378AD3", "border-style: none", "border-radius: 8px", "color : white", "font-size: 1vw"]);
 }
 
 function stylePalette() {
@@ -411,7 +414,9 @@ function detectCorrectAnswer(choices) {
  * Main
  */
 let Style = createStyleSheet();
-
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+}
 document.head.appendChild(Style); // Add the <style> element to the page
 setupStyleSheet(Style);
 
