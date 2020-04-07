@@ -41,7 +41,7 @@ function createIdVisual() {
     return "Visual_" + nbVis;
 }
 
-var nbTry = 22;
+var nbTry = 2;
 function createContainer() {
     let container = document.createElement("div");
     soluce = createSoluce();
@@ -54,15 +54,16 @@ function createContainer() {
     return container;
 }
 
+var nbChoix = 5;
 function createRow() {
     let row = document.createElement("div");
     row.classList.add("row");
     row.classList.add("inactive");
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < nbChoix + 1; i++) {
         let rowElement = createRowElement();
         row.appendChild(rowElement);
-        if (i==4) {
-            for (let index = 0; index < 4; index++) {
+        if (i==nbChoix) {
+            for (let index = 0; index < nbChoix; index++) {
                 rowElement.appendChild(createHintElement());
             }
         }
@@ -122,8 +123,8 @@ function createEndScreen() {
     }
     let text = document.createElement("div");
     let img = document.createElement("img");
-    img.src = gagne ? "https://image.flaticon.com/icons/svg/2784/2784484.svg" :"https://image.flaticon.com/icons/svg/1687/1687666.svg";
-    img.alt = "win logo";
+    img.src = gagne ? "https://image.flaticon.com/icons/svg/2784/2784484.svg" : "https://image.flaticon.com/icons/svg/1687/1687666.svg";
+    img.alt = "logo";
     img.style.cssText = "width: 200px; height: 200px;"
     text.appendChild(img);
     let textCongrat = document.createElement("div");
@@ -242,14 +243,6 @@ function finPartie() {
     gagne = false;
 }
 
-function updateContainer(container) {
-
-}
-
-function updateRow() {
-
-}
-
 function updateRowElement() {
 
 }
@@ -291,7 +284,7 @@ function destroyPalette() {
 function createSoluce() {
     let CreatedSoluce = [];
     let colorsSoluce = Array.from(colors);
-    for (let index = 0; index < 4; index++) {
+    for (let index = 0; index < nbChoix; index++) {
         CreatedSoluce.push(colorsSoluce.splice(Math.floor(Math.random() * colorsSoluce.length), 1)[0]);
     }
     return CreatedSoluce;
@@ -308,15 +301,18 @@ function valider() {
                 colorChoosed.push(elementRow.childNodes[0].classList[1])
             }
         }
-        if (colorChoosed.length == 4) {
-            row_Inactive(row);
+        if (colorChoosed.length == nbChoix) {
             let answer = detectCorrectAnswer(colorChoosed);
-            if (editHint(row, answer) == 4) {
+            if (editHint(row, answer) == nbChoix) {
                 gagne = true;
                 finPartie();
             }
+            else {
+                row_Inactive(row);
+            }
         }
     } catch (error) {
+        console.log(error)
         finPartie();
     }
 }
