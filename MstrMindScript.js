@@ -41,7 +41,7 @@ function createIdVisual() {
     return "Visual_" + nbVis;
 }
 
-var nbTry = 2;
+var nbTry = 12;
 function createContainer() {
     let container = document.createElement("div");
     soluce = createSoluce();
@@ -54,7 +54,7 @@ function createContainer() {
     return container;
 }
 
-var nbChoix = 5;
+var nbChoix = 4;
 function createRow() {
     let row = document.createElement("div");
     row.classList.add("row");
