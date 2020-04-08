@@ -103,14 +103,6 @@ function createVisual() {
     return visual;
 }
 
-function createRestartButton() {
-    let restartButton = document.createElement("button");
-    restartButton.style.cssText = "position : absolute; top : 0; Left : 0; height : 50px";
-    restartButton.innerHTML = "restart";
-    restartButton.onclick = function () { restart(); }
-    return restartButton;
-}
-
 function createEndScreen() {
     let ecranDeFin = document.createElement("div");
     ecranDeFin.id = "ecranFin";
@@ -119,7 +111,7 @@ function createEndScreen() {
         let element = this;
         setTimeout(function () { document.getElementById("ecranFin").remove(); }, 1000);
         this.style.top = "-100%";
-        restart()
+        restartMstrMind()
     }
     let text = document.createElement("div");
     let img = document.createElement("img");
@@ -202,9 +194,11 @@ function styleContainer() {
     return newStyle(".container", ["display: inline-block;"])
 }
 
-function styleAnimation() {
+function styleDropDown(params) {
     let styles = "";
-    styles += "$n: 20;";
+    styles += newStyle(".dropdown", ["position: absolute", "top: 10px", "left: 10px", "display: inline-block"]);
+    styles += newStyle(".dropdown>img", ["height: 50px","width: 50px"]);
+    styles += newStyle(".dropdown-content", ["display: none", "position: absolute", "background-color: red","z-index: 1"]);
     return styles;
 }
 
@@ -217,7 +211,7 @@ function setupStyleSheet(style) {
     content += styleHint();
     content += styleValidationButton();
     content += styleContainer();
-    content += styleAnimation();
+    content += styleDropDown();
     style.appendChild(document.createTextNode(content));
 }
 
@@ -233,7 +227,7 @@ function createStyleSheet() {
  * Editing Elements
  */
 
-function restart() {
+function restartMstrMind() {
     wrappers[0].getElementsByClassName("container")[0].remove();
     wrappers[0].appendChild(createContainer())
 }
@@ -419,6 +413,39 @@ setupStyleSheet(Style);
 let wrappers = document.getElementsByClassName("MastrMindWrapper");
 Array.from(wrappers).forEach(wrapper =>{
     wrapper.appendChild(createContainer());
-    wrapper.appendChild(createRestartButton());
     showRules();
 })
+
+Array.from(document.getElementsByClassName("dropdown")).forEach(element => {
+    element.onclick = function () {
+        Array.from(this.getElementsByClassName("dropdown-content")).forEach(classElement => {
+            if (event.target.nodeName != "INPUT" && event.target.nodeName != "BUTTON") {
+                if (classElement.style.display == "") {
+                    classElement.style.display = "block";
+                    element.getElementsByTagName("img")[0].src = "https://image.flaticon.com/icons/svg/2089/2089792.svg"
+                }
+                else {
+                    classElement.style.display = "";
+                    element.getElementsByTagName("img")[0].src = "https://image.flaticon.com/icons/svg/561/561123.svg"
+                }
+            }
+        })
+    }
+})
+
+Array.from(document.getElementsByClassName("range_value")).forEach(element => {
+    let range = element.parentNode.children[1];
+    element.textContent = makeValueRange(range.value);
+    if (range.parentNode.id == "nbChoices") nbChoix = parseInt(range.value, 10);
+    if (range.parentNode.id == "nbTry") nbTry = parseInt(range.value, 10);
+    range.onchange = function () {
+        element.textContent = makeValueRange(event.target.value);
+        if (range.parentNode.id == "nbChoices") nbChoix = parseInt(range.value, 10);
+        if (range.parentNode.id == "nbTry") nbTry = parseInt(range.value, 10);
+        console.log(nbChoix + " " + nbTry)
+    }
+})
+
+function makeValueRange(inp) {
+    return inp > 9 ? inp : "0" + inp;
+}

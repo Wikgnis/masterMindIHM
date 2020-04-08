@@ -8,6 +8,21 @@
 
 </head>
 <body>
+    <div class="dropdown">
+        <img src="https://image.flaticon.com/icons/svg/561/561123.svg" alt="menu">
+        <div class="dropdown-content">
+            <button onclick="showRules()"> Rules </button>
+            <div id="nbChoices">
+                <span class="range_value"></span>
+                <input type="range" min="1" max="8" step="1" value="4">
+            </div>
+            <div id="nbTry">
+                <span class="range_value"></span>
+                <input type="range" min="1" max="20" step="1" value="12">
+            </div>
+            <button onclick="restartMstrMind()"> Reload </button>
+        </div>
+    </div>
     <div class="MastrMindWrapper"></div>
     <script src="MstrMindScript.js"></script>
 </body>
