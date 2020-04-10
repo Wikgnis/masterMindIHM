@@ -15,6 +15,8 @@ document.addEventListener("keydown", event => {
  * Creating elements
  */
 function showRules() {
+    document.body.style.height = "100vh";
+    document.body.style.overflow = "hidden"
     document.getElementById("containerRules").style.top = "0px";
     let dropdownMenu = document.getElementsByClassName("dropdown")[0]
     dropdownMenu.style.left = "-100%"
@@ -159,18 +161,19 @@ function styleRowElements() {
 function styleRules() {
     let styles = "";
     styles += newStyle("#containerRules", ["font-family: 'Playfair Display', serif", "position: absolute", "width: 100%", "height: 100%", "overflow: hidden", "top: 0", "transition: 1s"]);
-    styles += newStyle("#Rules", ["transition: ease-in-out 1s", "position: relative", "height: 100%", "width: 200%", "background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%)", "display: flex", "flex-direction: row", "overflow: auto"])
-    styles += newStyle("#Rules1, #Rules2", ["height: 100%", "width: 100%", "display: flex", "align-items: center", "justify-content: space-evenly", "flex-wrap: wrap"])
-    styles += newStyle("#Rules1>div, #Rules2>div", [" margin-top: 150px", "width: 400px", "overflow: auto"]);
-    styles += newStyle("#Rules1>div>img, #Rules2>div>img", ["width: 400px", "height: 400px"])
+    styles += newStyle("#Rules", ["transition: ease-in-out 1s", "position: relative", "height: 100%", "width: 200%", "background: linear-gradient(110deg, #0c2461 60%, #1e3799 60%)", "display: flex", "flex-direction: row", "overflow: auto", "color : #f6f0e6"])
+    styles += newStyle("#Rules1, #Rules2", ["height: 100vh", "width: 100vw", "display: flex", "align-items: center", "justify-content: space-evenly", "flex-wrap: wrap"])
+    styles += newStyle("#Rules1>div, #Rules2>div", [" margin-top: 150px", "width: 400px", "overflow: hidden", "max-width: 100vw", "background : hsla(0, 0%, 0%, 0.322)", "padding : 15px", "border-radius : 8px", "min-height : 400px", "display : flex", "justify-content : center", "flex-direction : column"]);
+    styles += newStyle("#Rules1>div>img, #Rules2>div>img", ["max-width: 100vw", "max-height: 400px"])
     styles += newStyle(".square", ["display: inline-block", "height: 40px", "width: 40px", "background: white"])
-    styles += newStyle("#hideRules", ["position: absolute", "top: 0", "left: 25%", "transition: ease-out 1s"])
+    styles += newStyle("#hideRules", ["position: absolute", "top: 0", "left: 25%", "transition: ease-out 1s", "transform : translate(-50%, 0)"])
     return styles;
 }
 
 function styleHint() {
     let styles = new String();
-    styles += newStyle(".Hint", ["width : 20%", "height : 40%", "border-radius : 50%", "background : white", "display : inline-block"]);
+    styles += newStyle(".Hint", ["width : 100%", "border-radius : 50%", "background : white", "display : inline-block"]);
+    styles += newStyle(".Hint:after", ["padding-bottom: 100%", "display: block", "content: \"\";"])
     styles += newStyle(".found", ["background : green"]);
     styles += newStyle(".partFound", ["background : black"])
     return styles;
@@ -455,8 +458,10 @@ function makeValueRange(inp) {
 
 document.getElementById("hideRules").onclick = function () {
     document.getElementById("containerRules").style.top = "-100%";
+    document.body.style.height = "100%";
+    document.body.style.overflow = "auto"
     let dropdownMenu = document.getElementsByClassName("dropdown")[0]
-    dropdownMenu.style.left = "0"
+    dropdownMenu.style.left = "10px"
     
 }
 document.getElementById("Rules").onclick = function () {
@@ -474,4 +479,14 @@ document.getElementById("Rules").onclick = function () {
             }, 500)
         }
     }
+}
+
+function acceuilDisapear(event) {
+    let acceuil = document.getElementById("title");
+    acceuil.style.opacity = 0;
+    setTimeout(function () { document.getElementById("title").remove(); }, 1000);
+}
+
+function delTuto() {
+    document.getElementById("tuto").remove()
 }
