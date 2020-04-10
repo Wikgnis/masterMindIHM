@@ -14,25 +14,10 @@ document.addEventListener("keydown", event => {
 /**
  * Creating elements
  */
-function createMenu() {
-
-}
-
-function createRules() {
-    let Rules = document.createElement("div");
-    Rules.style.cssText = "position : absolute; top : 0; width : 100%; height : 100%; background : red; transition : 1s;";
-    Rules.onclick = function () {
-        this.id = "toDelete";
-        this.style.top = "-100%";
-        setTimeout(function () { document.getElementById("toDelete").remove(); }, 1000);
-        document.body.style.overflow = "auto";
-    }
-    return Rules;
-}
-
 function showRules() {
-    document.body.appendChild(createRules());
-    document.body.style.overflow = "hidden";
+    document.getElementById("containerRules").style.top = "0px";
+    let dropdownMenu = document.getElementsByClassName("dropdown")[0]
+    dropdownMenu.style.left = "-100%"
 }
 
 var nbVis = 0;
@@ -171,6 +156,18 @@ function styleRowElements() {
     return styles;
 }
 
+function styleRules() {
+    let styles = "";
+    styles += newStyle("#containerRules", ["font-family: 'Playfair Display', serif", "position: absolute", "width: 100%", "height: 100%", "overflow: hidden", "top: 0", "transition: 1s"]);
+    styles += newStyle("#Rules", ["transition: ease-in-out 1s", "position: relative", "height: 100%", "width: 200%", "background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%)", "display: flex", "flex-direction: row", "overflow: auto"])
+    styles += newStyle("#Rules1, #Rules2", ["height: 100%", "width: 100%", "display: flex", "align-items: center", "justify-content: space-evenly", "flex-wrap: wrap"])
+    styles += newStyle("#Rules1>div, #Rules2>div", [" margin-top: 150px", "width: 400px", "overflow: auto"]);
+    styles += newStyle("#Rules1>div>img, #Rules2>div>img", ["width: 400px", "height: 400px"])
+    styles += newStyle(".square", ["display: inline-block", "height: 40px", "width: 40px", "background: white"])
+    styles += newStyle("#hideRules", ["position: absolute", "top: 0", "left: 25%", "transition: ease-out 1s"])
+    return styles;
+}
+
 function styleHint() {
     let styles = new String();
     styles += newStyle(".Hint", ["width : 20%", "height : 40%", "border-radius : 50%", "background : white", "display : inline-block"]);
@@ -196,9 +193,11 @@ function styleContainer() {
 
 function styleDropDown(params) {
     let styles = "";
-    styles += newStyle(".dropdown", ["position: absolute", "top: 10px", "left: 10px", "display: inline-block"]);
+    styles += newStyle(".dropdown", ["position: absolute", "top: 10px", "left: 10px", "display: inline-block", "transition : 1s"]);
     styles += newStyle(".dropdown>img", ["height: 50px","width: 50px"]);
-    styles += newStyle(".dropdown-content", ["display: none", "position: absolute", "background-color: red","z-index: 1"]);
+    styles += newStyle(".dropdown-content", ["display: none", "position: absolute", "background-color: grey","z-index: 1"]);
+    styles += newStyle(".dropdown-content>button", ["width : 100%", "height : 50px", "color : "]);
+    styles += newStyle("#nbChoices, #nbTry", ["display : flex", "flex-direction : column", 'justify-content : center', "align-items : center"])
     return styles;
 }
 
@@ -212,6 +211,7 @@ function setupStyleSheet(style) {
     content += styleValidationButton();
     content += styleContainer();
     content += styleDropDown();
+    content += styleRules();
     style.appendChild(document.createTextNode(content));
 }
 
@@ -245,8 +245,11 @@ var paletteDeployed = false;
 var palette;
 var FocusedVisual = new Object();
 var colors = ["orange", "red", "green", "white", "blue", "black", "grey", "violet"];
+var menuStatus;
 
 function deployPallette() {
+    menuStatus = document.getElementsByClassName("dropdown-content")[0].style.display
+    document.getElementsByClassName("dropdown-content")[0].style.display = ""
     palette = document.createElement("div");
     palette.classList.add("palette")
     palette.onclick = function () { destroyPalette(); }
@@ -269,6 +272,7 @@ function deployPallette() {
 function destroyPalette() {
     FocusedVisual = null;
     try {
+        document.getElementsByClassName("dropdown-content")[0].style.display = menuStatus
         palette.parentNode.removeChild(palette);
         paletteDeployed = false;
     }
@@ -435,17 +439,39 @@ Array.from(document.getElementsByClassName("dropdown")).forEach(element => {
 
 Array.from(document.getElementsByClassName("range_value")).forEach(element => {
     let range = element.parentNode.children[1];
-    element.textContent = makeValueRange(range.value);
+    element.textContent = (element.parentNode.id == "nbChoices" ? "nombre de couleurs " : "nombre de tentatives ") + makeValueRange(range.value);
     if (range.parentNode.id == "nbChoices") nbChoix = parseInt(range.value, 10);
     if (range.parentNode.id == "nbTry") nbTry = parseInt(range.value, 10);
     range.onchange = function () {
-        element.textContent = makeValueRange(event.target.value);
+        element.textContent = (element.parentNode.id == "nbChoices" ? "nombre de couleurs " : "nombre de tentatives ") + makeValueRange(event.target.value);
         if (range.parentNode.id == "nbChoices") nbChoix = parseInt(range.value, 10);
         if (range.parentNode.id == "nbTry") nbTry = parseInt(range.value, 10);
-        console.log(nbChoix + " " + nbTry)
     }
 })
 
 function makeValueRange(inp) {
     return inp > 9 ? inp : "0" + inp;
+}
+
+document.getElementById("hideRules").onclick = function () {
+    document.getElementById("containerRules").style.top = "-100%";
+    let dropdownMenu = document.getElementsByClassName("dropdown")[0]
+    dropdownMenu.style.left = "0"
+    
+}
+document.getElementById("Rules").onclick = function () {
+    if (event.target.nodeName != "IMG") {
+        if (this.style.left == "-100%") {
+            this.style.left = 0;
+            setTimeout(function () {
+                document.getElementById("hideRules").style.left = "25%"
+            }, 500)
+        }
+        else {
+            this.style.left = "-100%";
+            setTimeout(function () {
+                document.getElementById("hideRules").style.left = "75%"
+            }, 500)
+        }
+    }
 }

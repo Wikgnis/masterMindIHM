@@ -59,7 +59,7 @@
         }
 
         #hideRules {
-            position: relative;
+            position: absolute;
             top: 0;
             left: 25%;
             transition: ease-out 1s;
@@ -99,7 +99,7 @@
             </div>
             <div id="Rules2">
                 <div>
-                    <img src="https://image.flaticon.com/icons/svg/1337/1337141.svg" alt="schema de l'interface">
+                    <img src="MaquetteIHM.svg" alt="schema de l'interface">
                 </div>
                 <div>
                     <div>
@@ -139,26 +139,5 @@
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById("hideRules").onclick = function () {
-            document.getElementById("containerRules").style.top = "-100%";
-        }
-        document.getElementById("Rules").onclick = function () {
-            if (event.target.nodeName != "IMG") {
-                if (this.style.left == "-100%") {
-                    this.style.left = 0;
-                    setTimeout(function () {
-                        document.getElementById("hideRules").style.left = "25%"
-                    }, 1000)
-                }
-                else {
-                    this.style.left = "-100%";
-                    setTimeout(function () {
-                        document.getElementById("hideRules").style.left = "75%"
-                    }, 1000)
-                }
-            }
-        }
-    </script>
 </body>
 </html>

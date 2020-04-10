@@ -5,13 +5,89 @@
     <title>MasterMind</title>
     <link href="style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="containerRules">
+        <div id="Rules">
+            <img id="hideRules" src="https://image.flaticon.com/icons/svg/633/633887.svg" alt="Hide Rules" height="100px">
+            <div id="Rules1">
+                <div><img src="https://www.regles-de-jeux.com/wp-content/uploads/2013/10/regle-mastermind.jpg"
+                        alt="mastermind">
+                </div>
+                <div>
+                    <h1>C'est quoi ?</h1>
+                    <p>
+                        Venez découvrir l’un des plus célèbres jeux de logique !
+    
+                        Le but du jeu du Mastermind est pour l’un des joueurs d’élaborer une combinaison difficilement
+                        déchiffrable
+                        et pour son
+                        adversaire, de deviner en un minimum de coup cette combinaison.
+                    </p>
+                </div>
+                <div>
+                    <h1>Le but ?</h1>
+                    <p>
+                        Le but du Mastermind est de gagner un maximum de manches.
+    
+                        Le joueur qui doit trouver la combinaison secrète gagne une manche dès lors qu’il y parvient en
+                        maximum 12
+                        coups.
+    
+                        Le joueur qui a conçu la combinaison secrète remporte la manche quand son adversaire n’est pas
+                        parvenu a
+                        trouvé la
+                        combinaison en 12 coups.
+                    </p>
+                </div>
+            </div>
+            <div id="Rules2">
+                <div>
+                    <img src="MaquetteIHM.svg" alt="schema de l'interface">
+                </div>
+                <div>
+                    <div>
+                        <h1>Premiere étape</h1>
+                        <p>Choisissez vos couleurs !</p>
+                        <p>Comment faire ? Rien de plus simple !</p>
+                        <ol>
+                            <li>cliquez sur les emplacements de pion</li>
+                            <li>Cliquez sur une des couleurs qui apparait sur l'écran</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h1>Deuxième étape</h1>
+                        <p>Une fois votre combinaison réalisée validez !</p>
+                        <ul>
+                            <li>Appuyez sur le bouton valider sur le coté de l'écran</li>
+                            <li>Ou appuyez sur la touche entrée</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h1>Troisième étape</h1>
+                        <p>Regardez les indices qui vont appraitre à la place du bouton valider.</p>
+                        <p>Chaque couleur indiquera quelque chose comme vous pouvez le voir a coté</p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div class="square" style="background: green;"></div> : une couleur est a la bonne place !
+                    </div>
+                    <div>
+                        <div class="square" style="background: black;"></div> : il y a une couleur de la combinaison
+                    </div>
+                    <div>
+                        <div class="square"></div> : raté 😕
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="dropdown">
         <img src="https://image.flaticon.com/icons/svg/561/561123.svg" alt="menu">
         <div class="dropdown-content">
-            <button onclick="showRules()"> Rules </button>
+        <button onclick="showRules()"> Rules </button>
             <div id="nbChoices">
                 <span class="range_value"></span>
                 <input type="range" min="1" max="8" step="1" value="4">
@@ -20,7 +96,7 @@
                 <span class="range_value"></span>
                 <input type="range" min="1" max="20" step="1" value="12">
             </div>
-            <button onclick="restartMstrMind()"> Reload </button>
+            <button onclick="restartMstrMind()"> Créer mastermind </button>
         </div>
     </div>
     <div class="MastrMindWrapper"></div>
